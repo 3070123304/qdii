@@ -618,13 +618,11 @@ button {
   }
 
   
-.fund-thead,
-.fund-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 75px 70px;
-  column-gap: 4px;
-  align-items: center;
-}
+  .fund-thead,
+  .fund-row {
+    grid-template-columns: minmax(0, 1fr) 66px 88px;
+    column-gap: 0;
+  }
   
   .th,
   .th-sort-button {
