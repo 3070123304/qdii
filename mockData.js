@@ -1,5 +1,5 @@
 window.mockData = {
-  updateDateLabel: '2026-05-31 08:00',
+  updateDateLabel: '2026-06-02 08:00',
   previousSummary: {
     buyableCount: 32,
     totalLimit: 12190,
