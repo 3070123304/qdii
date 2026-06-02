@@ -196,7 +196,7 @@ button {
 .core-desc {
   margin: 6px 0 0;
   color: #1677ff;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 850;
   line-height: 1.25;
 }
@@ -374,7 +374,7 @@ button {
 
 .th {
   color: #8b98aa;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   line-height: 1.25;
 }
@@ -395,7 +395,7 @@ button {
   overflow: hidden;
   color: #8b98aa;
   background: transparent;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
   line-height: 1.2;
   white-space: nowrap;
@@ -613,16 +613,19 @@ button {
     font-size: 26px;
   }
 
-  .core-stats {
+  .core-stats {F
     gap: 6px;
   }
 
-  .fund-thead,
-  .fund-row {
-    grid-template-columns: minmax(0, 1fr) 65px 53px;
-    column-gap: 3px;
-  }
-
+  
+.fund-thead,
+.fund-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 75px 70px;
+  column-gap: 4px;
+  align-items: center;
+}
+  
   .th,
   .th-sort-button {
     font-size: 14px;
