@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>纳指QDII 限额观察</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <img class="hero-bg-img" src="./assets/hero-finance.jpg" alt="">
+        <div class="hero-bg-mask"></div>
+        <div class="hero-inner">
+          <h1 class="hero-title-main">
+            <span>纳指QDII </span><span class="hero-title-accent">限额观察</span>
+          </h1>
+          <p class="hero-sub">一屏掌握全市场纳指额度</p>
+          <div class="hero-meta">
+            <div class="update-pill">
+              <span class="update-clock"></span>
+              <span class="pill-label">更新时间：</span>
+              <span id="updateDateLabel" class="pill-time"></span>
+            </div>
+            <p class="hero-risk-tip">风险提示：QDII限额信息仅供参考，不构成投资建议，请以公告为准。</p>
+          </div>
+        </div>
+      </header>
+
+      <main class="content-sheet">
+        <section class="core-card">
+          <div class="core-head">
+            <div>
+              <h2 id="glanceTitle" class="core-title"></h2>
+              <p id="glanceText" class="core-desc"></p>
+            </div>
+          </div>
+          <div id="coreStats" class="core-stats"></div>
+        </section>
+
+        <section class="fund-panel">
+          <div class="panel-head">
+            <h2 class="panel-title">基金列表</h2>
+          </div>
+
+          <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <input id="searchInput" class="search-input" type="search" placeholder="搜索基金名称 / 代码 / 公司" autocomplete="off">
+            <button id="searchClear" class="search-clear" type="button" aria-label="清空搜索">×</button>
+          </div>
+
+          <div id="categoryTabs" class="category-tabs" aria-label="基金分类筛选"></div>
+
+          <div class="fund-thead">
+            <div class="th th-name">产品名称</div>
+            <button class="th th-limit th-sort-button" type="button" data-sort-key="limit">
+              <span>单日限额</span><span class="sort-icon"><span class="sort-triangle sort-triangle--up"></span><span class="sort-triangle sort-triangle--down"></span></span>
+            </button>
+            <button class="th th-return th-sort-button" type="button" data-sort-key="return">
+              <span>近一年</span><span class="sort-icon"><span class="sort-triangle sort-triangle--up"></span><span class="sort-triangle sort-triangle--down"></span></span>
+            </button>
+          </div>
+
+          <div id="fundList" class="fund-list"></div>
+        </section>
+
+        <section class="feedback-card" aria-label="数据反馈和功能建议">
+          <div class="feedback-icon">!</div>
+          <div class="feedback-copy">
+            <h2 class="feedback-title">数据纠错 / 功能建议</h2>
+            <p class="feedback-desc">发现额度错误？欢迎反馈给我们</p>
+          </div>
+          <a class="feedback-btn" href="https://wj.qq.com/s2/26714160/844f/" target="_blank" rel="noopener">去反馈</a>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      window.__miniPage = null;
+      window.Page = function pageFactory(definition) {
+        window.__miniPage = definition;
+      };
+      window.wx = {
+        openEmbeddedMiniProgram() {},
+        setClipboardData() {},
+        showToast() {},
+      };
+    </script>
+    <script src="./miniPage.js"></script>
+    <script src="./webApp.js"></script>
+  </body>
+</html>
