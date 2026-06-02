@@ -1,14 +1,16 @@
 (function initWebApp() {
-  const page = window.__miniPage;
+  const mockData = window.mockData;
 
-  if (!page || !page.data) {
-    document.body.innerHTML = '<p style="padding:24px;font-family:sans-serif;">页面数据加载失败</p>';
+  if (!mockData) {
+    document.body.innerHTML = '<p style="padding:24px;font-family:sans-serif;">mockData.js 加载失败</p>';
     return;
   }
 
-  page.setData = function setData(updates, callback) {
-    this.data = Object.assign({}, this.data, updates);
-    if (typeof callback === 'function') callback.call(this);
+  const state = {
+    activeCategory: 'broad',
+    sortKey: 'limit',
+    sortDirection: 'desc',
+    searchKeyword: '',
   };
 
   const $ = (selector) => document.querySelector(selector);
@@ -31,32 +33,147 @@
       .replace(/'/g, '&#039;');
   }
 
+  function yuanFromLimitText(text) {
+    if (!text || String(text).includes('暂停')) return 0;
+    const value = parseInt(String(text).replace(/[^\d]/g, ''), 10);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function parseLimitNum(text) {
+    if (!text || String(text).includes('暂停')) return -1;
+    const value = parseInt(String(text).replace(/[^\d]/g, ''), 10);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function formatThousands(num) {
+    const value = Math.round(Number(num)) || 0;
+    return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function formatSignedDelta(value) {
+    const num = Math.round(Number(value)) || 0;
+    if (num > 0) return `较昨 +${formatThousands(num)}`;
+    if (num < 0) return `较昨 -${formatThousands(Math.abs(num))}`;
+    return '较昨 0';
+  }
+
+  function inferFundCategory(item) {
+    const name = item.name || '';
+    if (item.category) return item.category;
+    if (name.includes('生物') || name.includes('科技')) return 'theme';
+    return 'broad';
+  }
+
+  function getOneYearReturn(item) {
+    return item.oneYearReturn || '--';
+  }
+
+  function parseReturnNum(item) {
+    const returnText = getOneYearReturn(item);
+    if (!returnText || returnText === '--') return Number.NEGATIVE_INFINITY;
+    const value = parseFloat(String(returnText).replace('%', ''));
+    return Number.isFinite(value) ? value : Number.NEGATIVE_INFINITY;
+  }
+
+  function getCompanyName(name) {
+    const knownCompanies = [
+      '汇添富',
+      '南方',
+      '国泰',
+      '摩根',
+      '天弘',
+      '招商',
+      '宝盈',
+      '建信',
+      '大成',
+      '万家',
+      '华安',
+      '广发',
+      '华泰柏瑞',
+      '景顺长城',
+      '博时',
+      '华夏',
+      '易方达',
+      '嘉实',
+    ];
+    return knownCompanies.find((company) => String(name || '').startsWith(company)) || '基金';
+  }
+
+  function calculateSummary(funds) {
+    const purchasableFunds = funds.filter((item) => yuanFromLimitText(item.limitText) > 0);
+    return {
+      buyableCount: purchasableFunds.length,
+      totalLimit: purchasableFunds.reduce((sum, item) => sum + yuanFromLimitText(item.limitText), 0),
+    };
+  }
+
+  function sortFunds(list) {
+    return list.slice().sort((a, b) => {
+      const left = state.sortKey === 'return' ? parseReturnNum(a) : parseLimitNum(a.limitText);
+      const right = state.sortKey === 'return' ? parseReturnNum(b) : parseLimitNum(b.limitText);
+      return state.sortDirection === 'asc' ? left - right : right - left;
+    });
+  }
+
+  function getVisibleFunds() {
+    const keyword = state.searchKeyword.trim().toLowerCase();
+    const categoryFunds = mockData.funds.filter((item) => inferFundCategory(item) === state.activeCategory);
+    const filteredFunds = keyword
+      ? categoryFunds.filter((item) => {
+        const companyName = getCompanyName(item.name);
+        return [item.name, item.code, companyName].some((value) => String(value || '').toLowerCase().includes(keyword));
+      })
+      : categoryFunds;
+
+    return sortFunds(filteredFunds).map((item) => {
+      const returnText = getOneYearReturn(item);
+      const limitValue = yuanFromLimitText(item.limitText);
+      const isOpen = limitValue > 0;
+      return {
+        ...item,
+        returnText,
+        returnClass: String(returnText).startsWith('-') ? 'td-return--down' : 'td-return--up',
+        limitClass: isOpen ? '' : 'limit--closed',
+        statusLabel: isOpen ? '可申购' : '暂停',
+        statusClass: isOpen ? 'fund-status--open' : 'fund-status--closed',
+      };
+    });
+  }
+
   function renderCoreStats() {
-    const marketCards = page.data.marketIndexes.map((item) => `
-      <div class="core-stat market-stat">
-        <span class="market-index-name">${escapeHtml(item.name)}</span>
-        <div class="core-value-row">
-          <span class="market-index-value">${escapeHtml(item.value)}</span>
-          <span class="market-index-change ${escapeHtml(item.changeClass)}">${escapeHtml(item.change)}</span>
+    const summary = calculateSummary(mockData.funds);
+    const previousSummary = mockData.previousSummary || {};
+    const buyableDelta = summary.buyableCount - Number(previousSummary.buyableCount || 0);
+    const limitDelta = summary.totalLimit - Number(previousSummary.totalLimit || 0);
+
+    const marketCards = mockData.marketIndexes.map((item) => {
+      const changeClass = String(item.change || '').startsWith('-') ? 'market-index-change--down' : 'market-index-change--up';
+      return `
+        <div class="core-stat market-stat">
+          <span class="market-index-name">${escapeHtml(item.name)}</span>
+          <div class="core-value-row">
+            <span class="market-index-value">${escapeHtml(item.value)}</span>
+            <span class="market-index-change ${changeClass}">${escapeHtml(item.change)}</span>
+          </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
 
     coreStats.innerHTML = `
       <div class="core-stat">
         <span class="core-label">可买基金</span>
         <div class="core-value-row">
-          <span class="core-value">${escapeHtml(page.data.buyableCount)}</span>
+          <span class="core-value">${escapeHtml(summary.buyableCount)}</span>
           <span class="core-unit">只</span>
-          <span class="core-delta ${escapeHtml(page.data.buyableDeltaClass)}">${escapeHtml(page.data.buyableDelta)}</span>
+          <span class="core-delta ${buyableDelta < 0 ? 'glance-stat-diff--down' : 'glance-stat-diff--up'}">${escapeHtml(formatSignedDelta(buyableDelta))}</span>
         </div>
       </div>
       <div class="core-stat">
         <span class="core-label">可购额度</span>
         <div class="core-value-row">
-          <span class="core-value">${escapeHtml(page.data.avgLimit)}</span>
+          <span class="core-value">${escapeHtml(formatThousands(summary.totalLimit))}</span>
           <span class="core-unit">元</span>
-          <span class="core-delta ${escapeHtml(page.data.avgDeltaClass)}">${escapeHtml(page.data.avgDelta)}</span>
+          <span class="core-delta ${limitDelta < 0 ? 'glance-stat-diff--down' : 'glance-stat-diff--up'}">${escapeHtml(formatSignedDelta(limitDelta))}</span>
         </div>
       </div>
       ${marketCards}
@@ -64,16 +181,16 @@
   }
 
   function renderCategories() {
-    categoryTabs.innerHTML = page.data.fundCategories.map((item) => `
-      <button class="category-tab ${escapeHtml(item.activeClass)}" type="button" data-category="${escapeHtml(item.key)}">
+    categoryTabs.innerHTML = mockData.fundCategories.map((item) => `
+      <button class="category-tab ${item.key === state.activeCategory ? 'category-tab--active' : ''}" type="button" data-category="${escapeHtml(item.key)}">
         ${escapeHtml(item.label)}
       </button>
     `).join('');
 
     categoryTabs.querySelectorAll('[data-category]').forEach((button) => {
       button.addEventListener('click', () => {
-        page.setData({ activeCategory: button.dataset.category });
-        refreshVisibleFunds();
+        state.activeCategory = button.dataset.category;
+        render();
       });
     });
   }
@@ -81,14 +198,15 @@
   function renderSortState() {
     sortButtons.forEach((button) => {
       button.classList.remove('th-sort--active', 'th-sort--asc', 'th-sort--desc');
-      if (button.dataset.sortKey === page.data.sortKey) {
-        button.classList.add('th-sort--active', `th-sort--${page.data.sortDirection}`);
+      if (button.dataset.sortKey === state.sortKey) {
+        button.classList.add('th-sort--active', `th-sort--${state.sortDirection}`);
       }
     });
   }
 
   function renderFunds() {
-    const rows = page.data.visibleFunds.map((item) => `
+    const visibleFunds = getVisibleFunds();
+    fundList.innerHTML = visibleFunds.map((item) => `
       <div class="fund-row">
         <div class="td-name">
           <div class="name-wrap">
@@ -106,57 +224,43 @@
           <span class="cell-value ${escapeHtml(item.returnClass)}">${escapeHtml(item.returnText)}</span>
         </div>
       </div>
-    `).join('');
-
-    fundList.innerHTML = rows || '<div class="empty-state">没有匹配的基金</div>';
+    `).join('') || '<div class="empty-state">没有匹配的基金</div>';
   }
 
   function render() {
-    updateDateLabel.textContent = page.data.updateDateLabel;
-    glanceTitle.textContent = page.data.glanceTitle;
-    glanceText.textContent = page.data.glanceText;
-    searchInput.value = page.data.searchKeyword;
-    searchClear.classList.toggle('is-visible', Boolean(page.data.searchKeyword));
-
+    updateDateLabel.textContent = mockData.updateDateLabel;
+    glanceTitle.textContent = mockData.glanceTitle;
+    glanceText.textContent = mockData.glance;
+    searchInput.value = state.searchKeyword;
+    searchClear.classList.toggle('is-visible', Boolean(state.searchKeyword));
     renderCoreStats();
     renderCategories();
     renderSortState();
     renderFunds();
   }
 
-  function refreshVisibleFunds() {
-    const visibleFunds = page.getVisibleFunds();
-    page.setData({
-      fundCategories: page.getFundCategories(),
-      visibleFunds,
-      visibleCount: visibleFunds.length,
-    });
-    render();
-  }
-
   searchInput.addEventListener('input', () => {
-    page.setData({ searchKeyword: searchInput.value || '' });
-    refreshVisibleFunds();
+    state.searchKeyword = searchInput.value || '';
+    render();
   });
 
   searchClear.addEventListener('click', () => {
-    page.setData({ searchKeyword: '' });
-    refreshVisibleFunds();
+    state.searchKeyword = '';
+    render();
   });
 
   sortButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      page.onSortTap({
-        currentTarget: {
-          dataset: {
-            sortKey: button.dataset.sortKey,
-          },
-        },
-      });
+      const nextSortKey = button.dataset.sortKey;
+      if (state.sortKey !== nextSortKey) {
+        state.sortKey = nextSortKey;
+        state.sortDirection = 'desc';
+      } else {
+        state.sortDirection = state.sortDirection === 'desc' ? 'asc' : 'desc';
+      }
       render();
     });
   });
 
-  page.renderPage();
   render();
 }());
