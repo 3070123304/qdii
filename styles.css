@@ -196,7 +196,7 @@ button {
 .core-desc {
   margin: 6px 0 0;
   color: #1677ff;
-  font-size: 16px;
+  font-size: 12px;
   font-weight: 850;
   line-height: 1.25;
 }
@@ -452,7 +452,7 @@ button {
   display: -webkit-box;
   overflow: hidden;
   color: #111827;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.25;
   word-break: break-all;
@@ -470,7 +470,7 @@ button {
 
 .fund-code {
   color: #94a3b8;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.2;
 }
 
@@ -502,7 +502,7 @@ button {
 .cell-value {
   display: block;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 850;
   line-height: 1.2;
   text-overflow: clip;
@@ -625,7 +625,7 @@ button {
 
   .th,
   .th-sort-button {
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .fund-name,
