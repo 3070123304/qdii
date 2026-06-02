@@ -271,6 +271,11 @@ button {
   background: #ecfdf5;
 }
 
+.glance-stat-diff--flat {
+  color: #64748b;
+  background: #f1f5f9;
+}
+
 .fund-panel {
   margin-top: 10px;
   padding: 12px;
@@ -361,14 +366,16 @@ button {
 .fund-thead,
 .fund-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 66px 88px;
+  grid-template-columns: minmax(0, 1fr) 74px 82px;
   column-gap: 0;
   align-items: center;
+  padding-right: 12px;
 }
 
 .fund-thead {
   margin-top: 8px;
-  padding: 7px 0 6px;
+  padding-top: 7px;
+  padding-bottom: 6px;
   border-bottom: 1px solid #edf2f7;
 }
 
@@ -440,7 +447,8 @@ button {
 
 .fund-row {
   min-height: 48px;
-  padding: 6px 0;
+  padding-top: 6px;
+  padding-bottom: 6px;
   border-bottom: 1px solid #f1f5f9;
 }
 
@@ -613,15 +621,16 @@ button {
     font-size: 26px;
   }
 
-  .core-stats {F
+  .core-stats {
     gap: 6px;
   }
 
   
   .fund-thead,
   .fund-row {
-    grid-template-columns: minmax(0, 1fr) 66px 88px;
+    grid-template-columns: minmax(0, 1fr) 74px 82px;
     column-gap: 0;
+    padding-right: 10px;
   }
   
   .th,

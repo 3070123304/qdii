@@ -52,9 +52,16 @@
 
   function formatSignedDelta(value) {
     const num = Math.round(Number(value)) || 0;
-    if (num > 0) return `较昨 +${formatThousands(num)}`;
-    if (num < 0) return `较昨 -${formatThousands(Math.abs(num))}`;
-    return '较昨 0';
+    if (num > 0) return `较昨日+${formatThousands(num)}`;
+    if (num < 0) return `较昨日-${formatThousands(Math.abs(num))}`;
+    return '较昨日0';
+  }
+
+  function getDeltaClass(value) {
+    const num = Math.round(Number(value)) || 0;
+    if (num > 0) return 'glance-stat-diff--up';
+    if (num < 0) return 'glance-stat-diff--down';
+    return 'glance-stat-diff--flat';
   }
 
   function inferFundCategory(item) {
@@ -107,6 +114,24 @@
     };
   }
 
+  function getYesterdaySummary() {
+    const yesterdayFunds = mockData.yesterdayFunds || mockData.previousFunds;
+    if (Array.isArray(yesterdayFunds)) return calculateSummary(yesterdayFunds);
+
+    const dailyFunds = mockData.dailyFunds || mockData.fundsByDate;
+    if (dailyFunds && typeof dailyFunds === 'object') {
+      const dailyKeys = Object.keys(dailyFunds).sort();
+      const currentDate = mockData.currentDate || String(mockData.updateDateLabel || '').slice(0, 10);
+      const currentIndex = dailyKeys.indexOf(currentDate);
+      const yesterdayKey = currentIndex > 0 ? dailyKeys[currentIndex - 1] : dailyKeys[dailyKeys.length - 2];
+      if (yesterdayKey && Array.isArray(dailyFunds[yesterdayKey])) {
+        return calculateSummary(dailyFunds[yesterdayKey]);
+      }
+    }
+
+    return mockData.previousSummary || { buyableCount: 0, totalLimit: 0 };
+  }
+
   function sortFunds(list) {
     return list.slice().sort((a, b) => {
       const left = state.sortKey === 'return' ? parseReturnNum(a) : parseLimitNum(a.limitText);
@@ -142,7 +167,7 @@
 
   function renderCoreStats() {
     const summary = calculateSummary(mockData.funds);
-    const previousSummary = mockData.previousSummary || {};
+    const previousSummary = getYesterdaySummary();
     const buyableDelta = summary.buyableCount - Number(previousSummary.buyableCount || 0);
     const limitDelta = summary.totalLimit - Number(previousSummary.totalLimit || 0);
 
@@ -165,7 +190,7 @@
         <div class="core-value-row">
           <span class="core-value">${escapeHtml(summary.buyableCount)}</span>
           <span class="core-unit">只</span>
-          <span class="core-delta ${buyableDelta < 0 ? 'glance-stat-diff--down' : 'glance-stat-diff--up'}">${escapeHtml(formatSignedDelta(buyableDelta))}</span>
+          <span class="core-delta ${getDeltaClass(buyableDelta)}">${escapeHtml(formatSignedDelta(buyableDelta))}</span>
         </div>
       </div>
       <div class="core-stat">
@@ -173,7 +198,7 @@
         <div class="core-value-row">
           <span class="core-value">${escapeHtml(formatThousands(summary.totalLimit))}</span>
           <span class="core-unit">元</span>
-          <span class="core-delta ${limitDelta < 0 ? 'glance-stat-diff--down' : 'glance-stat-diff--up'}">${escapeHtml(formatSignedDelta(limitDelta))}</span>
+          <span class="core-delta ${getDeltaClass(limitDelta)}">${escapeHtml(formatSignedDelta(limitDelta))}</span>
         </div>
       </div>
       ${marketCards}
