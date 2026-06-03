@@ -1,5 +1,5 @@
 window.mockData = {
-updateDateLabel: "2026-06-02 08:00",
+updateDateLabel: "2026-06-03 08:00",
 
 previousSummary: {
 buyableCount: 29,
