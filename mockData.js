@@ -34,8 +34,8 @@ window.mockData = {
     { id: "9", category: "broad", name: "南方纳斯达克100指数(QDII)A", code: "016452", limitText: "50元", oneYearReturn: "+27.10%" },
     { id: "10", category: "broad", name: "南方纳斯达克100指数(QDII)C", code: "016453", limitText: "50元", oneYearReturn: "+26.97%" },
 
-    { id: "11", category: "broad", name: "万家纳斯达克100指数发起式(QDII)A", code: "019441", limitText: "50元", oneYearReturn: "+26.48%" },
-    { id: "12", category: "broad", name: "万家纳斯达克100指数发起式(QDII)C", code: "019442", limitText: "50元", oneYearReturn: "+26.22%" },
+    { id: "11", category: "broad", name: "万家纳斯达克100指数发起式(QDII)A", code: "019441", limitText: "10000元", oneYearReturn: "+26.48%" },
+    { id: "12", category: "broad", name: "万家纳斯达克100指数发起式(QDII)C", code: "019442", limitText: "10000元", oneYearReturn: "+26.22%" },
 
     { id: "13", category: "theme", name: "广发生物科技指数人民币(QDII)A", code: "001092", limitText: "10元", oneYearReturn: "+31.18%" },
     { id: "14", category: "theme", name: "广发生物科技指数人民币(QDII)C", code: "016470", limitText: "10元", oneYearReturn: "+30.76%" },
