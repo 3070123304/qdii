@@ -20,8 +20,8 @@ window.mockData = {
   ],
 
   funds: [
-    { id: "1", category: "broad", name: "万家纳斯达克100指数发起式(QDII)A", code: "019441", limitText: "1万元", oneYearReturn: "+26.48%" },
-    { id: "2", category: "broad", name: "万家纳斯达克100指数发起式(QDII)C", code: "019442", limitText: "1万元", oneYearReturn: "+26.22%" },
+    { id: "1", category: "broad", name: "万家纳斯达克100指数发起式(QDII)A", code: "019441", limitText: "10000元", oneYearReturn: "+26.48%" },
+    { id: "2", category: "broad", name: "万家纳斯达克100指数发起式(QDII)C", code: "019442", limitText: "10000元", oneYearReturn: "+26.22%" },
 
     { id: "3", category: "theme", name: "汇添富纳斯达克生物科技ETF发起式联接(QDII)A", code: "017894", limitText: "5000元", oneYearReturn: "+32.15%" },
     { id: "4", category: "theme", name: "汇添富纳斯达克生物科技ETF发起式联接(QDII)C", code: "017895", limitText: "5000元", oneYearReturn: "+31.81%" },
