@@ -1,9 +1,9 @@
 window.mockData = {
-  updateDateLabel: "2026-06-19 12:00",
+  updateDateLabel: "2026-06-22 12:00",
 
   previousSummary: {
     buyableCount: 29,
-    totalLimit: 11890
+    totalLimit: 30870
   },
 
   glanceTitle: "今日速览",
@@ -20,22 +20,22 @@ window.mockData = {
   ],
 
   funds: [
-    { id: "1", category: "theme", name: "汇添富纳斯达克生物科技ETF发起式联接(QDII)A", code: "017894", limitText: "5000元", oneYearReturn: "+32.15%" },
-    { id: "2", category: "theme", name: "汇添富纳斯达克生物科技ETF发起式联接(QDII)C", code: "017895", limitText: "5000元", oneYearReturn: "+31.81%" },
+    { id: "1", category: "broad", name: "万家纳斯达克100指数发起式(QDII)A", code: "019441", limitText: "1万元", oneYearReturn: "+26.48%" },
+    { id: "2", category: "broad", name: "万家纳斯达克100指数发起式(QDII)C", code: "019442", limitText: "1万元", oneYearReturn: "+26.22%" },
 
-    { id: "3", category: "broad", name: "建信纳斯达克100指数(QDII)A人民币", code: "539001", limitText: "100元", oneYearReturn: "+26.37%" },
-    { id: "4", category: "broad", name: "建信纳斯达克100指数(QDII)C人民币", code: "012752", limitText: "100元", oneYearReturn: "+25.99%" },
-    { id: "5", category: "broad", name: "建信纳斯达克100指数(QDII)D人民币", code: "023422", limitText: "100元", oneYearReturn: "+25.99%" },
+    { id: "3", category: "theme", name: "汇添富纳斯达克生物科技ETF发起式联接(QDII)A", code: "017894", limitText: "5000元", oneYearReturn: "+32.15%" },
+    { id: "4", category: "theme", name: "汇添富纳斯达克生物科技ETF发起式联接(QDII)C", code: "017895", limitText: "5000元", oneYearReturn: "+31.81%" },
 
-    { id: "6", category: "broad", name: "汇添富纳斯达克100ETF发起式联接(QDII)A", code: "018966", limitText: "100元", oneYearReturn: "+25.65%" },
-    { id: "7", category: "broad", name: "汇添富纳斯达克100ETF发起式联接(QDII)E", code: "021773", limitText: "100元", oneYearReturn: "+25.53%" },
-    { id: "8", category: "broad", name: "汇添富纳斯达克100ETF发起式联接(QDII)C", code: "018967", limitText: "100元", oneYearReturn: "+25.16%" },
+    { id: "5", category: "broad", name: "建信纳斯达克100指数(QDII)A人民币", code: "539001", limitText: "100元", oneYearReturn: "+26.37%" },
+    { id: "6", category: "broad", name: "建信纳斯达克100指数(QDII)C人民币", code: "012752", limitText: "100元", oneYearReturn: "+25.99%" },
+    { id: "7", category: "broad", name: "建信纳斯达克100指数(QDII)D人民币", code: "023422", limitText: "100元", oneYearReturn: "+25.99%" },
 
-    { id: "9", category: "broad", name: "南方纳斯达克100指数(QDII)A", code: "016452", limitText: "50元", oneYearReturn: "+27.10%" },
-    { id: "10", category: "broad", name: "南方纳斯达克100指数(QDII)C", code: "016453", limitText: "50元", oneYearReturn: "+26.97%" },
+    { id: "8", category: "broad", name: "汇添富纳斯达克100ETF发起式联接(QDII)A", code: "018966", limitText: "100元", oneYearReturn: "+25.65%" },
+    { id: "9", category: "broad", name: "汇添富纳斯达克100ETF发起式联接(QDII)E", code: "021773", limitText: "100元", oneYearReturn: "+25.53%" },
+    { id: "10", category: "broad", name: "汇添富纳斯达克100ETF发起式联接(QDII)C", code: "018967", limitText: "100元", oneYearReturn: "+25.16%" },
 
-    { id: "11", category: "broad", name: "万家纳斯达克100指数发起式(QDII)A", code: "019441", limitText: "10000元", oneYearReturn: "+26.48%" },
-    { id: "12", category: "broad", name: "万家纳斯达克100指数发起式(QDII)C", code: "019442", limitText: "10000元", oneYearReturn: "+26.22%" },
+    { id: "11", category: "broad", name: "南方纳斯达克100指数(QDII)A", code: "016452", limitText: "50元", oneYearReturn: "+27.10%" },
+    { id: "12", category: "broad", name: "南方纳斯达克100指数(QDII)C", code: "016453", limitText: "50元", oneYearReturn: "+26.97%" },
 
     { id: "13", category: "theme", name: "广发生物科技指数人民币(QDII)A", code: "001092", limitText: "10元", oneYearReturn: "+31.18%" },
     { id: "14", category: "theme", name: "广发生物科技指数人民币(QDII)C", code: "016470", limitText: "10元", oneYearReturn: "+30.76%" },
